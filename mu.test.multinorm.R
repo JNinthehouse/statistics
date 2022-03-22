@@ -1,25 +1,12 @@
-mu.test.multinorm=function(data, mu0, Sigma0=-1, alpha=0.05)   
-###############################################################
-## H0: mu=mu0 
-## Chisq testing (Sigma is unknown)
-## F testing (Sigma is known)
-##############  Input  ########################################
-## data  = design matrix with the ith sample in the ith line
-## mu0   = mu0 for null hypothesis
-## Sigma0= the known variance matrix
-## alpha = the significant level, default value = 0.05
-############## Output  ########################################
-## Reject.area = reject region
-## p.value     = p value
-###############################################################
-{
+mu.test.multinorm=function(x,y==-1,Sigma0=-1){
 
-data=as.matrix(data)
-n=nrow(data)
-p=ncol(data)
+if (y==-1){
+x=as.matrix(x)
+n=nrow(x)
+p=ncol(x)
 
 if (Sigma0!=-1){
-X.bar=apply(data, 2, mean)
+X.bar=apply(x, 2, mean)
 T1=n*t(X.bar-mu0)%*%solve(Sigma0)%*%(X.bar-mu0)
 
 a2=qchisq(1-alpha, p)
@@ -32,8 +19,8 @@ pv=1-pchisq(T1, p)
 return(list(Reject.area=reject, Xmean=X.bar, Chi.obs=T1, p.value=pv))}
 
 else if (Sigma0==-1){
-X.bar=apply(data, 2, mean)
-A=(n-1)*var(data)
+X.bar=apply(x, 2, mean)
+A=(n-1)*var(x)
 
 T2=(n-1)*n*t(X.bar-mu0)%*%solve(A)%*%(X.bar-mu0)
 FF=(n-p)/((n-1)*p)*T2
@@ -41,4 +28,59 @@ FF=(n-p)/((n-1)*p)*T2
 pv=1-pf(FF, p, n-p)
 return(list(Xmean=X.bar, F.obs=FF, p.value=pv))
 }
+}
+
+
+else if (y!=-1){
+  x=as.matrix(x)
+  y=as.matrix(y)
+  n1=nrow(x)
+  n2=nrow(y)
+  p=ncol(x)
+  if (n1==n2){
+    X.bar=apply(x, 2, mean) 
+    A1=(n1-1)*var(x)
+    Y.bar=apply(y, 2, mean)
+    A2=(n2-1)*var(y) 
+    A=(A1+A2)/(n1+n2-2)
+    
+    T2=(n1*n2/(n1+n2))*t(X.bar-Y.bar)%*%solve(A)%*%(X.bar-Y.bar)
+    FF=(n1+n2-2-p+1)/((n1+n2-2)*p)*T2
+    
+    pv=1-pf(FF, p, (n1+n2-p-1))
+    return(list(Xmean=X.bar, Ymean=Y.bar, F.obs=FF, p.value=pv))
+  }
+  if (n1<n2){
+    sumy1=matrix(rep(apply(y[1:n1,],2,sum),n1),nrow=n1,byrow=T)
+    sumy2=matrix(rep(apply(y,2,sum),n1),nrow=n1,byrow=T)
+    dataz=x-sqrt(n1/n2)*y[1:n1,]+sqrt(1/n1*n2)*sumy1-1/n2*sumy2
+    
+    n=n1
+    mu0=apply(x, 2, mean)-apply(y, 2, mean)
+    z.bar=apply(dataz, 2, mean)
+    A=(n-1)*var(dataz)
+    
+    T2=(n-1)*n*t(z.bar-mu0)%*%solve(A)%*%(z.bar-mu0)
+    FF=(n-p)/((n-1)*p)*T2
+    
+    pv=1-pf(FF, p, n-p)
+    return(list(zmean=z.bar, F.obs=FF, p.value=pv))
+  }
+  if (n1>n2){
+    sumy1=matrix(rep(apply(x[1:n2,],2,sum),n2),nrow=n2,byrow=T)
+    sumy2=matrix(rep(apply(x,2,sum),n2),nrow=n2,byrow=T)
+    dataz=y-sqrt(n2/n1)*x[1:n2,]+sqrt(1/n2*n1)*sumy1-1/n1*sumy2
+    
+    n=n2
+    mu0=apply(y, 2, mean)-apply(x, 2, mean)
+    z.bar=apply(dataz, 2, mean)
+    A=(n-1)*var(dataz)
+    
+    T2=(n-1)*n*t(z.bar-mu0)%*%solve(A)%*%(z.bar-mu0)
+    FF=(n-p)/((n-1)*p)*T2
+    
+    pv=1-pf(FF, p, n-p)
+    return(list(zmean=z.bar, F.obs=FF, p.value=pv))
+  }
+  }
 }
