@@ -1,4 +1,6 @@
 mu.test.multinorm=function(x,y==-1,Sigma0=-1){
+# single population : Sigma0 is known and Sigma0 is unknown
+# two populations   : Sigma0 is unknown 
 
 if (y==-1){
 x=as.matrix(x)
