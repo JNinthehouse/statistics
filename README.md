@@ -1,2 +1,2 @@
 # testfunction
-multinormal test fuction
+multinormal test fuction by R
