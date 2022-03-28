@@ -55,7 +55,7 @@ mu.test.multinorm=function(x,y=NULL,mu0=rep(0,ncol(x)),Sigma0=-1){
     if (n1<n2){
       sumy1=matrix(rep(apply(y[1:n1,],2,sum),n1),nrow=n1,byrow=T)
       sumy2=matrix(rep(apply(y,2,sum),n1),nrow=n1,byrow=T)
-      dataz=x-sqrt(n1/n2)*y[1:n1,]+sqrt(1/n1*n2)*sumy1-1/n2*sumy2
+      dataz=x-sqrt(n1/n2)*y[1:n1,]+sqrt(1/(n1*n2))*sumy1-1/n2*sumy2
       
       n=n1
       mu0=apply(x, 2, mean)-apply(y, 2, mean)
@@ -71,7 +71,7 @@ mu.test.multinorm=function(x,y=NULL,mu0=rep(0,ncol(x)),Sigma0=-1){
     if (n1>n2){
       sumy1=matrix(rep(apply(x[1:n2,],2,sum),n2),nrow=n2,byrow=T)
       sumy2=matrix(rep(apply(x,2,sum),n2),nrow=n2,byrow=T)
-      dataz=y-sqrt(n2/n1)*x[1:n2,]+sqrt(1/n2*n1)*sumy1-1/n1*sumy2
+      dataz=y-sqrt(n2/n1)*x[1:n2,]+sqrt(1/(n2*n1))*sumy1-1/n1*sumy2
       
       n=n2
       mu0=apply(y, 2, mean)-apply(x, 2, mean)
