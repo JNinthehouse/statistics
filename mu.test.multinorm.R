@@ -62,10 +62,10 @@ mu.test.multinorm=function(x,y=NULL,mu0=rep(0,ncol(x)),Sigma0=-1){
       z.bar=apply(dataz, 2, mean)
       A=(n-1)*var(dataz)
       
-      T2=(n-1)*n*t(z.bar-mu0)%*%solve(A)%*%(z.bar-mu0)
+      T2=(n-1)*n*t(z.bar)%*%solve(A)%*%(z.bar)
       FF=(n-p)/((n-1)*p)*T2
       
-      pv=round(1-pf(FF, p, n-p),3)
+      pv=round(1-pf(FF, p, n-p),10)
       return(list(zmean=z.bar, F.obs=FF, p.value=pv))
     }
     if (n1>n2){
@@ -78,10 +78,10 @@ mu.test.multinorm=function(x,y=NULL,mu0=rep(0,ncol(x)),Sigma0=-1){
       z.bar=apply(dataz, 2, mean)
       A=(n-1)*var(dataz)
       
-      T2=(n-1)*n*t(z.bar-mu0)%*%solve(A)%*%(z.bar-mu0)
+      T2=(n-1)*n*t(z.bar)%*%solve(A)%*%(z.bar)
       FF=(n-p)/((n-1)*p)*T2
       
-      pv=round(1-pf(FF, p, n-p),3)
+      pv=round(1-pf(FF, p, n-p),10)
       return(list(zmean=z.bar, F.obs=FF, p.value=pv))
     }
   }
