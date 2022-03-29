@@ -1,4 +1,4 @@
-mu.test.multinorm=function(x,y=NULL,mu0=rep(0,ncol(x)),Sigma0=-1){
+mu.test.multinorm=function(x,y=NULL,mu0=rep(0,ncol(x)),Sigma0=NULL){
   # single population : Sigma0 is known and Sigma0 is unknown
   # two populations   : Sigma0 is unknown 
   
@@ -7,7 +7,7 @@ mu.test.multinorm=function(x,y=NULL,mu0=rep(0,ncol(x)),Sigma0=-1){
     n=nrow(x)
     p=ncol(x)
     
-    if (Sigma0!=-1){
+    if (!is.null(Sigam0)){
       X.bar=apply(x, 2, mean)
       T1=n*t(X.bar-mu0)%*%solve(Sigma0)%*%(X.bar-mu0)
       
@@ -20,7 +20,7 @@ mu.test.multinorm=function(x,y=NULL,mu0=rep(0,ncol(x)),Sigma0=-1){
       pv=round(1-pchisq(T1, p),3)
       return(list(Reject.area=reject, Xmean=X.bar, Chi.obs=T1, p.value=pv))}
     
-    else if (Sigma0==-1){
+    else if (is.null(Sigam0)){
       X.bar=apply(x, 2, mean)
       A=(n-1)*var(x)
       
