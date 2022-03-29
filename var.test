@@ -1,0 +1,23 @@
+var.test=function(data, Sigma0)
+###############################################################
+## H0: Sigma=Sigma0
+## this is aymptotically a Chisq testing
+##############  Input  ########################################
+## data  = design matrix with the ith sample in the ith line
+## Sigma0= Simga0 for null hypothesis
+############## Output  ########################################
+## p.value     = p value
+###############################################################
+{
+n=nrow(data)
+p=ncol(data)
+
+A=(n-1)*var(data)
+S=A%*%solve(Sigma0)
+
+lambda=exp(sum(diag((-1)*S/2)))*(det(S))^(n/2)*(exp(1)/n)^(n*p/2)
+T5=-2*log(lambda)
+
+pv=1-pchisq(T5, p*(p+1)/2)
+return(list(Chi.obs=T5, p.value=pv))
+}
