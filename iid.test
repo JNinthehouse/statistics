@@ -1,0 +1,19 @@
+iid.test=function(data,col_index){
+  ## data n*p
+  ## col_index 1:p categorial vector
+  col_cat=as.numeric(names(table(col_index)))
+  q=as.numeric(as.vector(table(col_index)))
+  p=length(col_index)
+  n=nrow(data)
+  V=(n-1)*var(data)
+  tmp=det(V)
+  for (i in 1:length(col_cat)){
+    tmp=tmp/det((n-1)*var(data[,col_index==col_cat[i]]))
+  }
+  lambda=tmp^((n-1)/2)
+  f=(p^2-sum(q^2))/2
+  a=(2*(p^3-sum(q^3))+9*(p^2-sum(q^2)))/(6*(p^2-sum(q^2)))
+  pho=1-a/n
+  p_v=1-pchisq(-2*pho*lambda,f)
+  return(list(statistics=lambda,p.value=p_v))
+}
