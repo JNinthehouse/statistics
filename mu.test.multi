@@ -1,0 +1,35 @@
+mu.test.multi=function(data, k)#修改 factor  
+###################################################################
+## H0: mu1=mu2=...=muk
+## this is asymptotically a Chisq testing
+##############  Input  ############################################
+## data  = design matrix with a group index ind
+############## Output  ############################################
+## p.value     = p value
+###################################################################  
+{
+ind=data$ind
+
+n=nrow(data)
+p=ncol(data)-1
+
+data=data[ ,1:p]
+TT=(n-1)*var(data)
+  
+A=0
+for (i in 1:k)                                
+{
+datai=data[ind==i, ]
+ni=nrow(datai)                                 
+A=A+(ni-1)*var(datai)
+}
+
+Lambda=det(A)/det(TT)
+n1=n-k
+n2=k-1
+r=n1-(p-n2+1)/2
+Chi=(-1)*r*log(Lambda)
+
+pv=1-pchisq(Chi, p*n2)
+return(list(Chi.obs=Chi, p.value=pv))
+}
