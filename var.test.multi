@@ -1,0 +1,37 @@
+#### k independent normal distribution  ######### 
+var.test.multi=function(data, k)#修改 factor
+###################################################################
+## H0: Sigma1=Sigma2=...=Sigmak
+## this is asymptotically a Chisq testing
+##############  Input  ############################################
+## data  = design matrix with a group index ind
+############## Output  ############################################
+## p.value     = p value
+###################################################################
+{
+ind=data$ind
+
+n=nrow(data)
+p=ncol(data)-1
+data=data[ ,1:p]
+
+A=0
+det.A=0
+for (i in 1:k)                                
+{
+datai=data[ind==i, ]
+ni=nrow(datai)  
+
+A=A+(ni-1)*var(datai)
+det.A=det.A+(ni-1)*log(det(var(datai)))
+}
+
+M=(n-k)*log(det(A/(n-k)))-det.A
+d=(2*p^2+3*p-1)*(k+1)/(6*(p+1)*(n-k))
+f=p*(p+1)*(k-1)/2
+
+T6=(1-d)*M
+
+pv=1-pchisq(T6, f)
+return(list(Chi.obs=T6, p.value=pv))
+}
