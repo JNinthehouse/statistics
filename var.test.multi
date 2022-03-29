@@ -1,6 +1,7 @@
 #### k independent normal distribution  ######### 
-var.test.multi=function(data, k)#修改 factor
+var.test.multi=function(data)
 ###################################################################
+## Dims of data is n*(p+1) data[,p+1] is index
 ## H0: Sigma1=Sigma2=...=Sigmak
 ## this is asymptotically a Chisq testing
 ##############  Input  ############################################
@@ -9,7 +10,9 @@ var.test.multi=function(data, k)#修改 factor
 ## p.value     = p value
 ###################################################################
 {
+colnames(data)[ncol(data)]='ind'
 ind=data$ind
+k=length(table(ind))
 
 n=nrow(data)
 p=ncol(data)-1
