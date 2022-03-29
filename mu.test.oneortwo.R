@@ -1,4 +1,4 @@
-mu.test.multinorm=function(x,y=NULL,mu0=rep(0,ncol(x)),Sigma0=NULL){
+mu.test.oneortwo=function(x,y=NULL,mu0=rep(0,ncol(x)),Sigma0=NULL){
   # single population : Sigma0 is known and Sigma0 is unknown
   # two populations   : Sigma0 is unknown 
   
