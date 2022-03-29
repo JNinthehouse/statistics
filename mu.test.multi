@@ -1,5 +1,6 @@
 mu.test.multi=function(data, k)#修改 factor  
 ###################################################################
+## Dims of data is n*(p+1) data[,p+1] is index
 ## H0: mu1=mu2=...=muk
 ## this is asymptotically a Chisq testing
 ##############  Input  ############################################
@@ -8,7 +9,9 @@ mu.test.multi=function(data, k)#修改 factor
 ## p.value     = p value
 ###################################################################  
 {
+colnames(data)[ncol(data)]='ind'
 ind=data$ind
+k=length(table(ind))
 
 n=nrow(data)
 p=ncol(data)-1
