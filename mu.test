@@ -17,7 +17,7 @@ mu.test=function(x,y=NULL,mu0=rep(0,ncol(x)),Sigma0=NULL){
       rownames(reject)=c("Reject")
       colnames(reject)=c("Obs", ">1-alpha")
       
-      pv=round(1-pchisq(T1, p),3)
+      pv=round(1-pchisq(T1, p),6)
       return(list(Reject.area=reject, Xmean=X.bar, Chi.obs=T1, p.value=pv))}
     
     else if (is.null(Sigam0)){
@@ -27,7 +27,7 @@ mu.test=function(x,y=NULL,mu0=rep(0,ncol(x)),Sigma0=NULL){
       T2=(n-1)*n*t(X.bar-mu0)%*%solve(A)%*%(X.bar-mu0)
       FF=(n-p)/((n-1)*p)*T2
       
-      pv=round(1-pf(FF, p, n-p),3)
+      pv=round(1-pf(FF, p, n-p),6)
       return(list(Xmean=X.bar, F.obs=FF, p.value=pv))
     }
   }
@@ -49,7 +49,7 @@ mu.test=function(x,y=NULL,mu0=rep(0,ncol(x)),Sigma0=NULL){
       T2=(n1*n2/(n1+n2))*t(X.bar-Y.bar)%*%solve(A)%*%(X.bar-Y.bar)
       FF=(n1+n2-2-p+1)/((n1+n2-2)*p)*T2
       
-      pv=round(1-pf(FF, p, (n1+n2-p-1)),3)
+      pv=round(1-pf(FF, p, (n1+n2-p-1)),6)
       return(list(Xmean=X.bar, Ymean=Y.bar, F.obs=FF, p.value=pv))
     }
     if (n1<n2){
@@ -65,7 +65,7 @@ mu.test=function(x,y=NULL,mu0=rep(0,ncol(x)),Sigma0=NULL){
       T2=(n-1)*n*t(z.bar)%*%solve(A)%*%(z.bar)
       FF=(n-p)/((n-1)*p)*T2
       
-      pv=round(1-pf(FF, p, n-p),10)
+      pv=round(1-pf(FF, p, n-p),6)
       return(list(zmean=z.bar, F.obs=FF, p.value=pv))
     }
     if (n1>n2){
@@ -81,7 +81,7 @@ mu.test=function(x,y=NULL,mu0=rep(0,ncol(x)),Sigma0=NULL){
       T2=(n-1)*n*t(z.bar)%*%solve(A)%*%(z.bar)
       FF=(n-p)/((n-1)*p)*T2
       
-      pv=round(1-pf(FF, p, n-p),10)
+      pv=round(1-pf(FF, p, n-p),6)
       return(list(zmean=z.bar, F.obs=FF, p.value=pv))
     }
   }
